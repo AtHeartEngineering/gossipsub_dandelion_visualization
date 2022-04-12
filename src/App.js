@@ -1,22 +1,29 @@
 import React from 'react'
-import Canvas from './Canvas'
-import GeneratePeers from './GeneratePeers'
-import render_peers from './RenderPeers'
-import render_connections from './RenderConnections'
-import { clear_and_setup, render_frameCount } from './Utils'
-
+import { Graphviz } from 'graphviz-react';
 
 function App() {
-  const peers = GeneratePeers()
-  const draw = (ctx, frameCount) => {
-    clear_and_setup(ctx)
-    render_frameCount(ctx, frameCount)
-    render_connections(ctx, peers)
-    render_peers(ctx, peers)
-  }
-  let height = window.innerHeight;
-  let width = window.innerWidth;
-  return <Canvas draw={draw} width={width + "px"} height={height + "px"}/>
+  let graph = `graph {
+                "Source Peer" -- "Peer 1";
+                "Source Peer" -- "Peer 2";
+                "Source Peer" -- "Peer 3";
+                "Source Peer" -- "Peer 4";
+                "Peer 1" -- "Peer 2";
+                "Peer 3" -- "Peer 4";
+                "Peer 1" -- "Peer 5";
+                "Peer 1" -- "Peer 6";
+                "Peer 2" -- "Peer 5";
+                "Peer 2" -- "Peer 6";
+                "Peer 3" -- "Peer 7";
+                "Peer 3" -- "Peer 8";
+                "Peer 4" -- "Peer 8";
+                "Peer 4" -- "Peer 9";
+                "Peer 5" -- "Peer 6";
+                "Peer 6" -- "Peer 7";
+                "Peer 7" -- "Peer 8";
+                "Peer 8" -- "Peer 9";
+              }`
+  let options = {fit: true, width: '100%'}
+  return <Graphviz dot={graph} options={options} />
 }
 
 export default App
