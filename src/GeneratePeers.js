@@ -59,13 +59,17 @@ function GeneratePeers(num_peers, peers = [], min_dst = 50) {
         })
 
         peers.forEach((peer, idx) => {
+            peer.messages = [];
             peer.connected_to.sort((a, b) => {
                 return a.distance - b.distance;
             })
             let max = connected_peers * 1.5
             let min = connected_peers * .75
             let _num_connected_peers = Math.floor(Math.random() * (max - min + 1) + min)
-            peer.connected_to = peer.connected_to.slice(0, _num_connected_peers)
+            peer.connected_to = peer.connected_to.slice(0, _num_connected_peers+1)
+            peer.connected_to.forEach((connected_peer) => {
+                peers[connected_peer.id].connected_to.push({ id: idx, distance: connected_peer.distance })
+            })
         })
     }
 
@@ -79,7 +83,7 @@ function GeneratePeers(num_peers, peers = [], min_dst = 50) {
     create_peers_around_point(125, 6, peers[1].x, peers[1].y, 0, 90);
     create_peers_around_point(125, 6, peers[1].x, peers[1].y, 270, 360);
     connect_peers()
-    console.log(peers)
+    //console.log(peers)
     return peers
 }
 

@@ -1,9 +1,8 @@
 import { useRef, useEffect } from 'react'
 
-const useCanvas = (draw) => {
+const useCanvas = (draw, props) => {
 
   const canvasRef = useRef(null)
-
   useEffect(() => {
 
     const canvas = canvasRef.current
@@ -12,7 +11,7 @@ const useCanvas = (draw) => {
     let animationFrameId
     const render = () => {
       frameCount++
-      if (frameCount > 65534) {
+      if (frameCount > 1400) {
         frameCount = 0
       }
       draw(context, frameCount)

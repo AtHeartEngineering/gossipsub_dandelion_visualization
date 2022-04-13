@@ -27,7 +27,7 @@ const _predraw = (context, canvas) => {
 const Canvas = props => {
     const { draw, predraw = _predraw, ...rest } = props
     const canvasRef = useCanvas(draw, { predraw })
-    return <canvas ref={canvasRef} {...rest} />
+    return <canvas ref={canvasRef} {...rest} id="canvas"/>
 }
 
 export default Canvas

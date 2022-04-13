@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
+const CheckedIcon = () => <>🌜</>;
+const UncheckedIcon = () => <>🌞</>;
+
 const ToggleButton = ( props ) => {
 
     const [toggle, setToggle] = useState(false);
@@ -25,6 +28,17 @@ const ToggleButton = ( props ) => {
         }
     }
 
+    const getIcon = (type) => {
+        const { icons } = props;
+        if ( ! icons ) {
+            return null;
+        }
+
+        return icons[type] === undefined ?
+            ToggleButton.defaultProps.icons[type] :
+            icons[type];
+    }
+
     const toggleClasses = classNames('toggle', {
         'toggle--checked': toggle,
         'toggle--disabled': disabled
@@ -34,10 +48,10 @@ const ToggleButton = ( props ) => {
         <div onClick={triggerToggle} className={toggleClasses}>
             <div className="toggle-container">
                 <div className="toggle-check">
-                    <span>🌜</span>
+                    <span>{ getIcon('checked') }</span>
                 </div>
                 <div className="toggle-uncheck">
-                    <span>🌞</span>
+                    <span>{ getIcon('unchecked') }</span>
                 </div>
             </div>
             <div className="toggle-circle"></div>
@@ -45,6 +59,13 @@ const ToggleButton = ( props ) => {
         </div>
     );
 }
+
+ToggleButton.defaultProps = {
+    icons: {
+        checked: <CheckedIcon />,
+        unchecked: <UncheckedIcon />
+    }
+};
 
 ToggleButton.propTypes = {
     disabled: PropTypes.bool,
@@ -60,4 +81,10 @@ ToggleButton.propTypes = {
     ])
 };
 
+const Dandelion = () => <div style={{ color: "white" }}>D</div>;
+const Gossipsub = () => <div style={{ color: "white" }}>G</div>;
+const Play = () => <div style={{ color: "white" }}>▶</div>;
+const Pause = () => <div style={{ color: "white" }}>⏸</div>;
+
 export default ToggleButton;
+export { Dandelion, Gossipsub, Play, Pause };
