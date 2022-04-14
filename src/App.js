@@ -60,7 +60,7 @@ function App() {
   let seeded_messages = false
 
   React.useEffect(() => {
-    startRecording()
+    //startRecording()
    })
 
 

@@ -16,7 +16,7 @@ function RenderMessages(ctx, frameCount, peers, network, initialized, packet_rad
         let max = peers.length
         let min = 1
         let rando = Math.floor(Math.random() * (max - min + 1) + min)
-        send_message(network, peers, "Hello Ethereum!", rando, 200);
+        //send_message(network, peers, "Hello Ethereum!", rando, 200);
     }
     peers.forEach((peer) => {
         if (peer.messages.length > 0) {
