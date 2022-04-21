@@ -12,6 +12,7 @@
     "react-dom": "^18.0.0",
     "react-scripts": "5.0.0"
   },
+  "homepage": "https://atheartengineering.github.io/gossipsub_dandelion_visualization/",
   "scripts": {
     "start": "PORT=3001 react-scripts start",
     "build": "react-scripts build",
