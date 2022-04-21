@@ -21,8 +21,13 @@ jobs:
       with:
         node-version: 16.x
         cache: 'npm'
-    - run: npm install
+    - run: npm ci
     - run: npm run build
+    - name: Upload production-ready build files
+      uses: actions/upload-artifact@v2
+      with:
+        name: production-files
+        path: ./build
     
   deploy:
     name: deploy to github pages
