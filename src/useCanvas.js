@@ -11,7 +11,7 @@ const useCanvas = (draw, props) => {
     let animationFrameId
     const render = () => {
       frameCount++
-      if (frameCount > 1400) {
+      if (frameCount > 1200) {
         frameCount = 0
       }
       draw(context, frameCount)

@@ -2,13 +2,15 @@ import React from 'react'
 import Canvas from './Canvas'
 import GeneratePeers from './GeneratePeers'
 import RenderPeers from './RenderPeers'
+import RenderTitle from './RenderTitle'
 import RenderConnections from './RenderConnections'
 import RenderMessages from './RenderMessages'
-import { clear_and_setup, render_framecount } from './Utils'
+import { clear_and_setup, render_framecount, reset_styles } from './Utils'
 import colors from './colors'
 import ToggleButton from './toggleButton'
 
-window.peers = GeneratePeers()
+window.peers_g = GeneratePeers()
+window.peers_d = GeneratePeers()
 
 const Dandelion = () => <div style={{ color: "white" }}>D</div>;
 const Gossipsub = () => <div style={{ color: "white" }}>G</div>;
@@ -24,7 +26,7 @@ function startRecording() {
   // every time the recorder has new data, we will store it in our array
   rec.ondataavailable = e => chunks.push(e.data);
   // only when the recorder stops, we construct a complete Blob from all the chunks
-  rec.onstop = e => exportVid(new Blob(chunks, {type: 'video/webm'}));
+  rec.onstop = e => exportVid(new Blob(chunks, { type: 'video/webm' }));
 
   rec.start();
   setTimeout(() => { rec.stop() }, 30000);
@@ -44,7 +46,7 @@ function exportVid(blob) {
 
 
 function App() {
-  const [darkTheme, setDarkTheme] = React.useState(false)
+  const [darkTheme, setDarkTheme] = React.useState(true)
   const [playback, setPlayback] = React.useState(true)
   const [networkType, setnetworkType] = React.useState(false)
 
@@ -55,34 +57,55 @@ function App() {
   const random_peer_hue = false
 
   const height = window.innerHeight - 5;
-  const width = window.innerWidth - 50;
+  const width = window.innerWidth / 2 - 50;
 
-  let seeded_messages = false
+  let seeded_messages_g = false
+  let seeded_messages_d = false
 
   React.useEffect(() => {
     //startRecording()
-   })
+  })
 
 
   function reset() {
-    window.peers = GeneratePeers()
-    seeded_messages = false
+    window.peers_g = GeneratePeers()
+    window.peers_d = GeneratePeers()
+    seeded_messages_g = false
+    seeded_messages_d = false
   }
 
   // MAIN DRAW FUNCTION THAT IS PASSED TO THE CANVAS
-  const draw = (ctx, frameCount) => {
+  const draw_gossipsub = (ctx, frameCount) => {
     if (playback) {
       if (frameCount === 0) {
         reset()
       }
       clear_and_setup(ctx, colors[theme])
-      render_framecount(ctx, frameCount, colors[theme])
-      RenderConnections(ctx, window.peers, colors[theme])
-      RenderPeers(ctx, window.peers, colors[theme], random_peer_hue)
-      RenderMessages(ctx, frameCount, window.peers, network, seeded_messages)
-      seeded_messages = true
+      //render_framecount(ctx, frameCount, colors[theme])
+      RenderTitle(ctx, frameCount, colors[theme], "Gossipsub")
+      reset_styles(ctx,colors[theme])
+      RenderConnections(ctx, window.peers_g, colors[theme])
+      RenderPeers(ctx, window.peers_g, colors[theme], random_peer_hue)
+      RenderMessages(ctx, frameCount, window.peers_g, 'gossipsub', seeded_messages_g)
+      seeded_messages_g = true
     }
   }
+  const draw_dandelion = (ctx, frameCount) => {
+    if (playback) {
+      if (frameCount === 0) {
+        reset()
+      }
+      clear_and_setup(ctx, colors[theme])
+      //render_framecount(ctx, frameCount, colors[theme])
+      RenderTitle(ctx, frameCount, colors[theme], "Gossipsub + Dandelion++")
+      reset_styles(ctx,colors[theme])
+      RenderConnections(ctx, window.peers_d, colors[theme])
+      RenderPeers(ctx, window.peers_d, colors[theme], random_peer_hue)
+      RenderMessages(ctx, frameCount, window.peers_d, 'dandelion', seeded_messages_d)
+      seeded_messages_d = true
+    }
+  }
+
 
   const TopBar = () => {
     let network = ""
@@ -97,18 +120,18 @@ function App() {
       document.title = network
     }, [network]);
     return (<div className="topbar">
-      <h1 style={{ color: colors[theme].stroke, }}>{network}</h1>
-      <button onClick={()=> reset()}>Reset</button>
-      <ToggleButton onChange={(state) => setPlayback(state)} icons={{ checked: <Play />, unchecked: <Pause /> }} defaultChecked={playback}/>
-      <ToggleButton onChange={(state) => setDarkTheme(state)} defaultChecked={darkTheme}/>
-      <ToggleButton onChange={(state) => { setnetworkType(state); reset() }} icons={{ checked: <Dandelion />, unchecked: <Gossipsub /> }} defaultChecked={!networkType}/>
+      <h1 style={{ color: colors[theme].stroke, }}>Gossipsub & Gossipsub w/ Dandelion ++</h1>
+      <button onClick={() => reset()}>Reset</button>
+      <ToggleButton onChange={(state) => setPlayback(state)} icons={{ checked: <Play />, unchecked: <Pause /> }} defaultChecked={playback} />
+      <ToggleButton onChange={(state) => setDarkTheme(state)} defaultChecked={darkTheme} />
     </div>)
   }
 
   return (
     <>
-      <TopBar></TopBar>
-      <Canvas draw={draw} width={width + "px"} height={height + "px"} />
+      {/* <TopBar></TopBar> */}
+      <Canvas draw={draw_gossipsub} width={width + "px"} height={height + "px"} />
+      <Canvas draw={draw_dandelion} width={width + "px"} height={height + "px"} />
       <div id="video"></div>
     </>)
 }

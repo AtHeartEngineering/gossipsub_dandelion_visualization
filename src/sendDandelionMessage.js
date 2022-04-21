@@ -1,7 +1,7 @@
 import { messageInTransit } from "./Utils"
 export default send_dandelion_message
 
-function send_dandelion_message(peers, message, from_idx, hue = 15, stem) {
+function send_dandelion_message(peers, message, from_idx, hue = 15, stem, previously_from) {
     let same_message_index = peers[from_idx].messages.findIndex((msg) => msg.message === message)
     if (same_message_index > -1) {
         if (peers[from_idx].messages[same_message_index].stem === 0) {
@@ -24,7 +24,7 @@ function send_dandelion_message(peers, message, from_idx, hue = 15, stem) {
 
     if (stem > 0) {
         //console.log(`${from_idx}: Sending stem of length ${stem}`)
-        selectedPeers = selectRandomPeers(peers[from_idx].connected_to)
+        selectedPeers = selectRandomPeers(peers[from_idx].connected_to, previously_from)
         selectedPeers.forEach((peer) => {
             _inTransit.push(new messageInTransit(peers[from_idx], peers[peer.id]))
         })
@@ -45,7 +45,7 @@ function send_dandelion_message(peers, message, from_idx, hue = 15, stem) {
 
 
 
-function selectRandomPeers(topicPeers) {
+function selectRandomPeers(topicPeers, previously_from) {
     const numPeers = 1
     let candidates = []
     const selectedPeers = []
@@ -53,6 +53,7 @@ function selectRandomPeers(topicPeers) {
     if (topicPeers !== undefined) {
         // console.log(topicPeers.size + " peers in topic '" + topic + "'")
         candidates = Array.from(topicPeers.values())
+        candidates = candidates.filter(item => item.id != previously_from)
         for (let i = 0; i < numPeers; i++) {
             const randomPeer = Math.floor(Math.random() * candidates.length)
             if (candidates[randomPeer] !== undefined) {

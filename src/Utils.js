@@ -2,17 +2,25 @@ const clear_and_setup = (ctx, colors) => {
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
     ctx.lineWidth = 5;
     ctx.strokeStyle = colors.stroke;
-    ctx.font = '18px sans';
+    ctx.font = '20px sans-serif';
     ctx.textAlign = "center";
     ctx.fillStyle = colors.background;
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+}
+
+const reset_styles = (ctx, colors) => {
+    ctx.lineWidth = 5;
+    ctx.strokeStyle = colors.stroke;
+    ctx.font = '20px sans-serif';
+    ctx.textAlign = "center";
+    ctx.fillStyle = colors.background;
 }
 
 const render_framecount = (ctx, frameCount, colors) => {
     ctx.lineWidth = 5;
     ctx.strokeStyle = "red";
     ctx.fillStyle = "red";
-    ctx.font = '18px sans';
+    ctx.font = '20px sans';
     ctx.textAlign = "center";
     ctx.fillText("frame: " + frameCount, ctx.canvas.width/2, 25);
 }
@@ -103,6 +111,7 @@ function hslToHex(h, s, l) {
 
 export {
     clear_and_setup,
+    reset_styles,
     render_framecount,
     rand_int_range,
     centered,
