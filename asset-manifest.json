@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/gossipsub_dandelion_visualization/static/css/main.e9c46a55.css",
-    "main.js": "/gossipsub_dandelion_visualization/static/js/main.d6647fa1.js",
+    "main.js": "/gossipsub_dandelion_visualization/static/js/main.11045973.js",
     "index.html": "/gossipsub_dandelion_visualization/index.html",
     "main.e9c46a55.css.map": "/gossipsub_dandelion_visualization/static/css/main.e9c46a55.css.map",
-    "main.d6647fa1.js.map": "/gossipsub_dandelion_visualization/static/js/main.d6647fa1.js.map"
+    "main.11045973.js.map": "/gossipsub_dandelion_visualization/static/js/main.11045973.js.map"
   },
   "entrypoints": [
     "static/css/main.e9c46a55.css",
-    "static/js/main.d6647fa1.js"
+    "static/js/main.11045973.js"
   ]
 }
